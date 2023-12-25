@@ -6,8 +6,16 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <Arduino_JSON.h>
-#include <openssl/evp.h>
-#include <openssl/rsa.h>
+
+
+#include <wolfssl/ssl.h>
+#include <wolfssl/wolfcrypt/ecc.h>
+#include <wolfssl/wolfcrypt/rsa.h>
+#include <wolfssl/wolfcrypt/signature.h>
+#include <wolfssl/wolfcrypt/hash.h>
+#include <wolfssl/wolfcrypt/logging.h>
+#include <wolfssl/wolfcrypt/error-crypt.h>
+
 
 #define WIFI_SSID "dupa"
 #define WIFI_PASSWD "sraka"
@@ -78,23 +86,15 @@ boolean keyVerification(String key) {
     
     // Verify JWT key signature
     String hpayload = rtnObject["header"] + "." + rtnObject["payload"];
-
-    EVP_PKEY* pubKey  = EVP_PKEY_new();
-    EVP_PKEY_assign_RSA(publicKey, rsa);
-    EVP_MD_CTX* m_RSAVerifyCtx = EVP_MD_CTX_create();
-    if(EVP_DigestVerifyInit(m_RSAVerifyCtx, NULL, EVP_sha256(), NULL, pubKey) <= 0 | EVP_DigestVerifyUpdate(m_RSAVerifyCtx, hpayload, hpayload.length) <= 0) {
-      return false;
-    }
-    // Hashing the payload with SHA256
-    SHA256 hashit;
-    hashit.doUpdate(hpayload);
-    byte hpayloadhashed[32]; // Hashit
-    hashit.doFinal(hpayloadhashed);
-
-    int auth = EVP_DigestVerifyFinal(m_RSAVerifyCtx, hpayloadhashed, hpayloadhashed.length);
-    if(auth == 1) {
-      return true;
-    }
+    byte buf0[signature.length()];
+    byte buf1[hpayload.length()];
+    byte buf2[publicKey.length()];
+    signature.getBytes(buf0, signature.length());
+    hpayload.getBytes(buf1, hpayload.length());
+    publicKey.getBytes(buf2, publicKey.length());
+    int res = wc_SignatureVerify(WC_HASH_TYPE_SHA256, WC_SIGNATURE_TYPE_RSA, buf0, hpayload.length(), buf1, signature.length(), buf2, publicKey.length());
+    if(res < 0) Serial.println("FAILURE!!!!!!!!! ERROR TYPE CODE" + res);
+    if(res == 0) return true;
     
     return false;
 
