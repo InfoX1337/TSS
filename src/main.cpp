@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <Crypto.h>
 
 #include <mcp_can.h>
 #include <SPI.h>
@@ -24,30 +23,30 @@ boolean keyVerification(String key) {
   // tss.xconnect.cc publicKey;
 
   String publicKey = "-----BEGIN PUBLIC KEY-----\n"\
-"MIIEIjANBgkqhkiG9w0BAQEFAAOCBA8AMIIECgKCBAEOGr4oFdJT4lmncPk5X0qM\n"\
-"YS0G7Qxza740+qI20VT8/YrQy4isrR+MK1B1mnBsPp4mT9z1T+ItzDEoBDUwb173\n"\
-"TuR6GOImhetiUFwyn9TOKnXL2mb9aVV3AGMy6QkWNJO1DEMeq6u1Fp/zyWzlfRs2\n"\
-"J1WUv58xETL5tv8QzjCPhbZV3QRNPc1sNjBGoO3DkhDn9CGgvA1CrQKw1XJ3prLX\n"\
-"Q4JPPxk8egZsAI/5ZNHKFzV1THohX3A07wrWiwDCQu5vnflRLiqQ/1MarxrUoGFF\n"\
-"DRyZcDBd8fS9Cl4NG+V7gv1yufqtGPzBVxZHA7DNsT5YD/aeJG2oShHEAZbi/Ux6\n"\
-"rROS8yVmEG5u5krdUEGTr6kLDcoIpfFJJ0uDHkg2jr1wIU9Qt0oSTjAiqp450yDX\n"\
-"OzAoxuzDOea80I1/ax0fZa33ne0RbYYaOZGQNxJ4DGBSqouoXmeyo32kcRvSp4o4\n"\
-"LUPoT7MEyjduK6P9uUCwy0n5K7Rqqtx8Q2wAG9b9BkRr3dFY+3RZNCfEd/sIejug\n"\
-"DezOKAa08Vo9nvQHlNkbXX2zIr3jHVPOqQrduMFUXrmWYM/CiqB8JP6EjAwaxmmr\n"\
-"AcDYndY0F1g7h53rD9HLmR0br7yaJl9PF5ngCpksPSRZ2e3hgJuOY2VQ9Hw5Xv1y\n"\
-"xPCuw7SKoFuf6bmFbhMRcV7Wd9VhkyUZGtiSC0aLS9/Rec13dx50az/9JaAEzNrN\n"\
-"MIgRI5KZ6P/Nhyfw9f61GdSz4MKEyXtdJgbOoTTjJYO7BTxsGjkHq/MS+ly+4lVU\n"\
-"YESYP0oQADQ4c5t14/vF+74qmuqTrWdx33hFcJmvs75r0HW6eaj8W37JDjdSyGLw\n"\
-"YbinuU7ExNUhMV8QC0FTfmS+ftvJXgg1AnThJj+nBUQ3nUi2oZQHDGbeEJLvKaxi\n"\
-"cOK5d1E9GPEIF4URCgwiPuuIPb4KsHtiT5WZTkDZah5Ql9V95PX9B0ZjN6h9RRWN\n"\
-"///xebddN0Nrj7QdTigmoD6V2RkCKXh0lTi3HcZUwW575+QOyhsNpq9x9zebli/2\n"\
-"QvoESYiU7rVsW17rofgJzcKUqY9dmN5PsfhiNRNhmpYXBy0bTODJkzwBnaaxX+HI\n"\
-"mLOLLIm5FuFMbiL/8JccelBQY3bequxnUY7/n+pFKhpJtxkAfN8uGTTKMjlWv/kF\n"\
-"AlTtcK+1nvKWEn2481p+XN8k5hf6bTlQQLgcrtaohtfrSMRZLvrbsi4WbG39LCyX\n"\
-"lfgeb1MZE0yLBNpzM6HAG4WRIm52tocR6+xzWRENZ6HgfOLXJUEUwYM/bzLzICpP\n"\
-"X/O2KdL0cqhw8k2aaxnrMi9IsPSY/BztjMaTH6RJUIaP5rgOE1LB/TscGkvP78so\n"\
-"7QIDAQAB\n"\
-"-----END PUBLIC KEY-----\n";
+  "MIIEIjANBgkqhkiG9w0BAQEFAAOCBA8AMIIECgKCBAEOGr4oFdJT4lmncPk5X0qM\n"\
+  "YS0G7Qxza740+qI20VT8/YrQy4isrR+MK1B1mnBsPp4mT9z1T+ItzDEoBDUwb173\n"\
+  "TuR6GOImhetiUFwyn9TOKnXL2mb9aVV3AGMy6QkWNJO1DEMeq6u1Fp/zyWzlfRs2\n"\
+  "J1WUv58xETL5tv8QzjCPhbZV3QRNPc1sNjBGoO3DkhDn9CGgvA1CrQKw1XJ3prLX\n"\
+  "Q4JPPxk8egZsAI/5ZNHKFzV1THohX3A07wrWiwDCQu5vnflRLiqQ/1MarxrUoGFF\n"\
+  "DRyZcDBd8fS9Cl4NG+V7gv1yufqtGPzBVxZHA7DNsT5YD/aeJG2oShHEAZbi/Ux6\n"\
+  "rROS8yVmEG5u5krdUEGTr6kLDcoIpfFJJ0uDHkg2jr1wIU9Qt0oSTjAiqp450yDX\n"\
+  "OzAoxuzDOea80I1/ax0fZa33ne0RbYYaOZGQNxJ4DGBSqouoXmeyo32kcRvSp4o4\n"\
+  "LUPoT7MEyjduK6P9uUCwy0n5K7Rqqtx8Q2wAG9b9BkRr3dFY+3RZNCfEd/sIejug\n"\
+  "DezOKAa08Vo9nvQHlNkbXX2zIr3jHVPOqQrduMFUXrmWYM/CiqB8JP6EjAwaxmmr\n"\
+  "AcDYndY0F1g7h53rD9HLmR0br7yaJl9PF5ngCpksPSRZ2e3hgJuOY2VQ9Hw5Xv1y\n"\
+  "xPCuw7SKoFuf6bmFbhMRcV7Wd9VhkyUZGtiSC0aLS9/Rec13dx50az/9JaAEzNrN\n"\
+  "MIgRI5KZ6P/Nhyfw9f61GdSz4MKEyXtdJgbOoTTjJYO7BTxsGjkHq/MS+ly+4lVU\n"\
+  "YESYP0oQADQ4c5t14/vF+74qmuqTrWdx33hFcJmvs75r0HW6eaj8W37JDjdSyGLw\n"\
+  "YbinuU7ExNUhMV8QC0FTfmS+ftvJXgg1AnThJj+nBUQ3nUi2oZQHDGbeEJLvKaxi\n"\
+  "cOK5d1E9GPEIF4URCgwiPuuIPb4KsHtiT5WZTkDZah5Ql9V95PX9B0ZjN6h9RRWN\n"\
+  "///xebddN0Nrj7QdTigmoD6V2RkCKXh0lTi3HcZUwW575+QOyhsNpq9x9zebli/2\n"\
+  "QvoESYiU7rVsW17rofgJzcKUqY9dmN5PsfhiNRNhmpYXBy0bTODJkzwBnaaxX+HI\n"\
+  "mLOLLIm5FuFMbiL/8JccelBQY3bequxnUY7/n+pFKhpJtxkAfN8uGTTKMjlWv/kF\n"\
+  "AlTtcK+1nvKWEn2481p+XN8k5hf6bTlQQLgcrtaohtfrSMRZLvrbsi4WbG39LCyX\n"\
+  "lfgeb1MZE0yLBNpzM6HAG4WRIm52tocR6+xzWRENZ6HgfOLXJUEUwYM/bzLzICpP\n"\
+  "X/O2KdL0cqhw8k2aaxnrMi9IsPSY/BztjMaTH6RJUIaP5rgOE1LB/TscGkvP78so\n"\
+  "7QIDAQAB\n"\
+  "-----END PUBLIC KEY-----\n";
   
   // Start WiFi connectivity controller
   WiFi.begin(WIFI_SSID, WIFI_PASSWD);
